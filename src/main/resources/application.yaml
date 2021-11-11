@@ -1,0 +1,333 @@
+server.port: 9090
+
+spring.profiles.active: local
+
+rest:
+  base:
+    connectionTimeout: 30000
+    connectionRequestTimeout: 30000
+    readTimeout: 60000
+    apicUrl:
+    IBMClientId:
+    IBMClientSecret:
+  loan-application-catalog:
+    &common_apic_config
+    serviceUrl: ${rest.base.apicUrl}
+    IBMClientId: ${rest.base.IBMClientId}
+    IBMClientSecret: ${rest.base.IBMClientSecret}
+  product:
+    <<: *common_apic_config
+  insurance:
+    <<: *common_apic_config
+  event-service:
+    <<: *common_apic_config
+    provide-service-token: true
+  oauth-service:
+    serviceUrl:
+    username:
+    password:
+    realm: arsnova
+    clientId: arsnova
+  arsnova-trade-point:
+    <<: *common_apic_config
+  pos-tradepoint:
+    <<: *common_apic_config
+  p-o-a-operator:
+    <<: *common_apic_config
+    provide-service-token: true
+  additional-service-package:
+    <<: *common_apic_config
+  decision-vector:
+    generic-command-service:
+      serviceUrl: ${rest.base.apicUrl}
+      IBMClientId:
+      IBMClientSecret:
+      provide-service-token: true
+  loan-application-events:
+    serviceUrl: ${rest.base.apicUrl}
+    IBMClientId:
+    IBMClientSecret:
+  human-task:
+    <<: *common_apic_config
+    provide-service-token: true
+  loan-application:
+    <<: *common_apic_config
+  params-collector:
+    <<: *common_apic_config
+  scan:
+    <<: *common_apic_config
+  loan-insurance:
+    <<: *common_apic_config
+  loan-product-i-r-r:
+    <<: *common_apic_config
+    provide-service-token: true
+  loan-application-sign-types:
+    <<: *common_apic_config
+    provide-service-token: true
+  full-repayment:
+    <<: *common_apic_config
+  generic-human-task:
+    <<: *common_apic_config
+  client:
+    <<: *common_apic_config
+  rbp:
+    <<: *common_apic_config
+  loans:
+    <<: *common_apic_config
+  annuity-calculator:
+    <<: *common_apic_config
+  client-active-applications:
+    <<: *common_apic_config
+
+db.application.datasource:
+  driver-class-name: oracle.jdbc.OracleDriver
+  url:
+  username:
+  password:
+  minimumIdle:
+  connectionTestQuery: SELECT 1 FROM DUAL
+
+#включает чтение конфига для обращения у сайту
+qsoft.enable: "true"
+qsoft.authorization:
+
+#Тип XSellOffer, предназначенный для офферов TopUp
+offer.gp.topup: "GP TopUp"
+calculationType:
+  # Режим расчета даты ПДП (используется для TopUp, может принимать значение nearestBusinessDay или repaymentDate)
+  repaymentDate: nearestBusinessDay
+  # Базовый расчет ПДП с сохранением расчета (0 в Profile, используется для TopUp)
+  repaymentAmount: basicWithSave
+#Коды пакетов доп. услуг, которые доступны для выбранного оффера с обязательным подключением страховки LoanApplication/offers/rins='1'
+validation.servicePackageCode.rins: 118,119,120,121,122
+#Список доступных сроков кредита
+loan.terms: 24, 36, 48, 60
+# Список ролей, для которых требуется проверка доверенности на прикладывание сканов
+check.poa.role.list: UFE_AGENT
+# Список безусловно обязательных для авторизации сканов
+authorization.mandatory.scans: 301,302,303,900,800
+# Список каналов поступления заявки, для которых не требуется создание HumanTask
+no.human.task.channel: 8,13
+# Коммандер, изменивший статус заявки
+changedBy.command: Handler
+passport.document.type: 20
+available.document.types: 4,14,21,10000000001,10000000002,10000000003
+address.type.registration: 5
+email.check.regexp: ^(?=.{1,50}$)[A-Za-z\d.!#$%&"*+\/\-=?^_`{|}~]+@[A-Za-z\d-]+(\.[A-Za-z\d-]+)+$
+cancellation.comment.type: cancellation
+cancellation.decision.type: 4
+# Тип рабочего телефона
+contact.type.work: 3
+# Тип адреса места работы
+address.type.work: 8
+# Тип адреса фактического проживания
+address.type.fact: 2
+# Код настройки обязательности фотографирования
+trade.point.photo.require: foto_require
+# url для проверки того, что в ответе от RE есть команда для Handler
+rulesengine.decision.url:
+# идентификатор партнерской сети
+partner.networkId: 16
+# Перечень тегов неосновных продуктов
+additional.product.tag: GPOC
+# Перечень тегов неосновных продуктов GPOC с виртуальной картой
+virtual.card.tag: GPOC,VirtualCard
+# Перечень статусов скана, для определения новых (загруженных заново с фронта) сканов
+new.scan.upload.status: 1
+# Перечень статусов скана, для определения перезагруженных на фронте сканов
+renew.scan.upload.status: 2
+# Минимальная сумма дохода по справкам 2НДФЛ и о доходах по форме банка
+min.proofincome.general: 9500
+# Минимальная сумма пенсии по справке о размере пенсии от ПФР
+min.proofincome.pension: 8000
+# Класс продукта для потребительских кредитов
+il.product.class: IL
+# Класс продукта для кредитов general purpose
+gp.product.class: GP
+# Класс продукта для кредитных карт
+cc.product.class: CC
+# Класс продукта для дебетовых карт
+dc.product.class: DC
+# Признак дополнительного продукта виртуальной карты
+virtual.card.product.tag: VirtualCard
+# Группа продуктов для выдачи потребительских кредитов
+consumer.credit.product.group: 13
+# Коды пакетов доп. услуг для которых не осуществляется валидация
+validation.servicePackageCode.exception: 118,119,120,121,122,999
+# Способ получение кредита: "На карту" (GPOC)
+obtaining.type.plastic.card: 4
+# Способ получения кредита: "На виртуальную карту" (GPOC, VirtualCard)
+virtual.card.obtaining.type: 7
+# Значение типа карты по умолчанию
+create.card.default.card.type: 5
+# Значение типа виртуальной карты
+create.card.virtual.card.type: 8
+# Комментарий о смене типа подписания
+signingDocs:
+  comment:
+    type: changingSignType
+    text: "Тип подписания $<docSignType> был изменен."
+
+#Минимальное количество указанных контактных лиц для выбранного оффера
+contact.persons.count: "{'GP': {'Xsell':1, 'TopUp':1, 'Direct': 1, 'Refinance': 3}, 'CC': {'Direct': 1, 'Xsell':1, 'CashCard': 2}}"
+
+# Код торговой точки выдачи дополнительного продукта DC для курьерской доставки
+additional.trade.point.purchase: 909305183
+
+# Список кодов для канала ДБО
+dbo.channel: 4,5
+
+partner.channel: CRB
+partner.channel-code: 8
+
+# Наименование канала для мобильного банка
+mbs.channel: MBS
+mbs.channel-code: 4
+
+# Наименование канала для интернет-банка
+ibs.channel: IBS
+ibs.channel-code: 5
+
+# Код канала сайта
+web.channel-code: 3
+
+# Код канала автоматически созданной заявки GP на основе IL
+autoGP.channel-code: 14
+
+# Код для канала Маркетплейс и наименование канала для sravniru
+marketplace.channel: marketplace
+marketplace.channel-code: 13
+
+arsnova:
+  channel: ARSNOVA
+  channel-role: CRT
+
+# Тип подписания документации Простая электронная подпись (ПЭП)
+signType.pep: 2
+# Тип подписания документации Собственноручная подпись (СП)
+signType.handwritten: 1
+# Перечень идентификаторов пакетов дополнительных документов, для которых доступна ПЭП (1 - только паспорт)
+documentPackageId.pep: 1
+# Идентификатор, обозначающий, что для определенного пакета доп. услуг доступна и Собственноручная подпись, и ПЭП
+universal.docSignType.for.additionalService: 3
+# Список ролей, для которых требуется проверка контактных лиц
+contactPersons.role.list: "UFE_BRANCH"
+# Время поиска базовой заявки (в секундах)
+baseLoanApplicationSearchTime: 10
+# Значение параметра callingSystem, определяющее arsnova
+calling.system.arsnova: ARSNOVA
+# Статус закрытого договора в Profile
+contract.closed.status.code: Закрыт
+# Время жизни записи кэша в секундах
+cache.loan-application-catalog.ttl: 43200
+cache.loan-application-catalog.code-set.ttl: 43200
+cache.loan-application-catalog-critical-field-set.ttl: 43200
+cache.product.ttl: 3600
+cache.arsnova-trade-point.ttl: 43200
+# ТТ выдачи в ДБО
+dbo.trade.point.purchase:
+
+task:
+  name.common.list: startLoanForm,verificationScansRework,shortLoanForm,shortLoanFormExistingClient,additionalFillingLoanForm,clientIdentification,doublingLoanForm,shortLoanFormPartner,fullLoanFormPartner,clientIdentificationPartner,loanDetails,loanDetailsFromPartner,signedDocuments,signedDocumentsFromPartner,purchaseConfirm,refuse,chosingAutorizationType,authorizationScansRework,shortLoanFormForSA,shortLoanFormExistingClientForSA,additionalFillingLoanFormForSA,loanDetailsForSA,generateDocsFromPartner,signedDocumentsForSA
+  without.applicationid: startLoanForm,shortLoanFormPartner,fullLoanFormPartner,clientIdentificationPartner,doublingLoanForm,fullLoanFormFromPartnerForSA,clientIdentification
+
+roles:
+  - UFE_AGENT:
+      permissions:
+        - PERM_ATTACH_INCOME_DOCS
+  - UFE_POS:
+      permissions:
+        - PERM_ATTACH_INCOME_DOCS
+        - PERM_STANDARD_DOCS_DATA_ENTRY
+        - PERM_SEARCH_CLIENT
+  - UFE_CVP:
+      permissions:
+        - PERM_ATTACH_INCOME_DOCS
+        - PERM_SEARCH_CLIENT
+  - UFE_BRANCH:
+      permissions:
+        - PERM_ATTACH_INCOME_DOCS
+        - PERM_STANDARD_DOCS_DATA_ENTRY
+        - PERM_SEARCH_CLIENT
+  - UFE_CONTACT_CENTRE:
+      permissions:
+        - PERM_SEARCH_CLIENT
+  - UFE_COLLECTION:
+      permissions:
+  - UFE_DBO:
+      permissions:
+occupationTypeRules:
+  - juniorSpecialist:
+      occupationType: '1'
+      presenceOfSubordinates: false # нет подчиненных
+      minMonthsWorked: 1 #от 1 месяца
+      maxMonthsWorked: 11 #до 11 месяцев (до 1 года)
+  - specialist:
+      occupationType: '2'
+      presenceOfSubordinates: false
+      minMonthsWorked: 12 #от 12 месяцев (от 1 года)
+      maxMonthsWorked: 36 #до 36 месяцев (до 3 лет)
+  - seniorSpecialist:
+      occupationType: '3'
+      presenceOfSubordinates: false
+      minMonthsWorked: 37 #от 37 месяцев (более 3 лет)
+      maxMonthsWorked: 1199 #до 1199 месяцев (максимально с фронта можно ввести 99 лет и 11 мес, что равно 1199 мес)
+  - beginnerLeader:
+      occupationType: '4'
+      presenceOfSubordinates: true #есть подчиненные
+      minMonthsWorked: 1 #от 1 месяца
+      maxMonthsWorked: 11 #до 11 месяцев (до 1 года)
+  - experiencedLeader:
+      occupationType: '5'
+      presenceOfSubordinates: true
+      minMonthsWorked: 12 #от 12 месяцев (от 1 года)
+      maxMonthsWorked: 36 #до 36 месяцев (до 3 лет)
+  - seniorLeader:
+      occupationType: '6'
+      presenceOfSubordinates: true
+      minMonthsWorked: 37 #от 37 месяцев (более 3 лет)
+      maxMonthsWorked: 1199 #до 1199 месяцев (максимально с фронта можно ввести 99 лет и 11 мес, что
+
+apiconnect:
+  product:
+    max-capacity:
+  subscriptions:
+    loan-application-catalog:
+    human-task:
+    additional-service-package:
+    pos-tradepoint:
+    insurance:
+    loan-insurance:
+    product:
+    loan-application:
+    arsnova-trade-point:
+    scan:
+    poa-operator:
+    loan-product-irr:
+    loan-application-sign-types:
+    full-repayment:
+    client:
+    rbp:
+    loans:
+    annuity-calculator:
+    client-active-applications:
+  manual-subscriptions:
+    loan-application-events:
+        plan:
+        version: '[1.0.0,2.0.0)'
+    dbo-human-task:
+        plan:
+        version: '[3.0.0,4.0.0)'
+    web-human-task:
+        plan:
+        version: '[1.0.0,2.0.0)'
+    web-notification:
+        plan:
+        version: '[1.0.0,2.0.0)'
+  subscribers:
+    rules-engine:
+openshift:
+  parameters:
+    ROUTE_TIMEOUT:
+    REPLICAS:
+    JAVA_OPTIONS:

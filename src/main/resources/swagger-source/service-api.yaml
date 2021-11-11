@@ -1,0 +1,21 @@
+swagger: '2.0'
+info:
+  description: Микросервис для обработки данных от пользователей
+  version: 1.0.0-SNAPSHOT
+  title: la-reports
+  termsOfService: 'http://recredit.ru/api/terms/'
+  license:
+    name: Собственность КБ Ренессанс Кредит
+    url: 'https://www.rencredit.ru/'
+  contact:
+    name: 'Команда ARSnova'
+    email: '#ARSnovaAnalytics@rencredit.ru'
+  x-ibm-name: la-reports-api
+host: api.rencredit.ru
+basePath: /la_reports/v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
